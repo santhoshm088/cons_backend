@@ -2,6 +2,7 @@ import express from 'express';
 import User from '../models/UserModel.js';
 import expressAsyncHandler from 'express-async-handler';
 import { generateToken } from '../utils.js';
+import Product from '../models/product.js';
 
 const userRouter = express.Router();
 
@@ -28,7 +29,7 @@ userRouter.get(
     });
     if (users) {
       console.log(arr)
-      res.send(arr);
+      res.json(arr);
       return;
     }
     res.status(404).send({ message: 'Users not found!' });
@@ -86,6 +87,7 @@ userRouter.put(
   '/signin',
   expressAsyncHandler(async (req, res) => {
     try {
+      
       const user = await User.findOne({ email: req.body.email });
       
       if (user && user.password === req.body.password) {
@@ -141,6 +143,45 @@ userRouter.post('/signup', async (req, res) => {
  }
 
 });
+
+
+
+
+
+
+
+userRouter.get(
+  '/page',
+ expressAsyncHandler (async (req, res) => {
+
+    const data = req.query.value;
+    console.log(data)
+    
+    const users = await Product.find({name:data});
+    const arr = new Array();
+    
+    users.forEach((ele) => {
+      
+      const user = {
+        
+        name:ele.name,
+        manufacturer:ele.manufacturer,
+        stock:ele.stock,
+        availibility:ele.availibility
+      };
+      arr.push(user);
+      
+    });
+    
+    if (users) {
+      console.log(arr)
+      
+      res.json(arr);
+      return;
+    }
+    res.status(404).send({ message: 'Users not found!' });
+  })
+);
 
 
 

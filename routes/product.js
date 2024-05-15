@@ -82,6 +82,22 @@ productRouter.get("/delete/:id", Product.deleteSelectedProduct = async (req, res
   }
   );
 
+
+
+  const data = [
+    { id: 1, name: 'John' },
+    { id: 2, name: 'Jane' },
+    { id: 3, name: 'Doe' }
+  ];
+  
+  // Define route to handle GET request
+  productRouter.get('/data', (req, res) => {
+    // Send the data as JSON
+    res.json(data);
+  });
+
+
+
 // // Search Product
 // app.get("/search", product.searchProduct);
 
